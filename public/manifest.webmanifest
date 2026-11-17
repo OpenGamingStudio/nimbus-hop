@@ -1,0 +1,17 @@
+{
+  "name": "Nimbus Hop",
+  "short_name": "Nimbus Hop",
+  "description": "Un petit mouton saute de nuage en nuage. Un tap, un saut !",
+  "lang": "fr",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#7CC8F5",
+  "background_color": "#7CC8F5",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
