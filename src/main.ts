@@ -1,7 +1,7 @@
 import './style.css';
 import { Audio } from './audio';
 import { draw, type Puff, type View } from './render';
-import { load, store } from './save';
+import { load, parse, store } from './save';
 import { SHEEP_Y, W, newGame, step, tap, type State } from './sim';
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
@@ -242,3 +242,33 @@ $('menu-best').textContent = String(save.best);
 syncSound();
 setScreen('menu');
 requestAnimationFrame(frame);
+
+/* ---------- compte OpenGamingStudio (facultatif) ---------- */
+interface AccountApi {
+  init(o: {
+    game: string;
+    version: string;
+    getSave: () => unknown;
+    applySave: (d: unknown) => void;
+    isEmpty?: (d: unknown) => boolean;
+    describe?: (d: unknown) => string;
+  }): void;
+}
+const ogs = (window as unknown as { OGSAccount?: AccountApi }).OGSAccount;
+ogs?.init({
+  game: 'nimbus-hop',
+  version: '1.0',
+  getSave: () => save,
+  applySave: (d) => {
+    const n = parse(JSON.stringify(d));
+    save.best = n.best;
+    save.sound = n.sound;
+    store(save);
+    audio.sound = save.sound;
+    syncSound();
+    $('menu-best').textContent = String(save.best);
+    $('hud-best').textContent = String(save.best);
+  },
+  isEmpty: (d) => parse(JSON.stringify(d)).best === 0,
+  describe: (d) => `record ${parse(JSON.stringify(d)).best}`,
+});
